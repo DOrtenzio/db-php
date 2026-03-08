@@ -7,22 +7,17 @@
 </head>
 <body>
     <div>
-        <p>Crea Il DB</p>
-        <form action="crea_db.php" method="POSt">
-            <input name="namedb" type="text" required>
-            <input type="submit" name="Accedi">
-            <input type="reset" name="Annulla">
-        </form>
-    </div>
-    <div>
-        <p>Accedi ad un DB</p>
-        <form action="accedi_db.php" method="POST">
+        <p>Accedi o Crea un DB</p>
+        <form method="POST">
             <input type="text" name="host" placeholder="localhost" required>
-            <input type="text" name="name" placeholder="dbname" required>
+            <input type="text" name="namedb" placeholder="dbname" required>
             <input type="text" name="usr" placeholder="username" required>
-            <input type="text" name="psw" placeholder="password" required>
-            <input type="submit" name="Accedi">
-            <input type="reset" name="Annulla">
+            <input type="text" name="psw" placeholder="password">
+
+            <button type="submit" formaction="crea_db.php">Crea</button>
+            <button type="submit" formaction="accedi_db.php">Accedi</button>
+
+            <input type="reset" value="Annulla">
         </form>
     </div>
 </body>
