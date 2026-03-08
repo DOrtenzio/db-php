@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea Tabelle</title>
+</head>
+<body>
+    <div>
+        <p>Crea Il DB</p>
+        <form action="crea_db.php" method="POSt">
+            <input name="namedb" type="text" required>
+            <input type="submit" name="Accedi">
+            <input type="reset" name="Annulla">
+        </form>
+    </div>
+    <div>
+        <p>Accedi ad un DB</p>
+        <form action="accedi_db.php" method="POST">
+            <input type="text" name="host" placeholder="localhost" required>
+            <input type="text" name="name" placeholder="dbname" required>
+            <input type="text" name="usr" placeholder="username" required>
+            <input type="text" name="psw" placeholder="password" required>
+            <input type="submit" name="Accedi">
+            <input type="reset" name="Annulla">
+        </form>
+    </div>
+</body>
+</html>
