@@ -1,0 +1,75 @@
+/* shared styles for the phpmyadmin2 app */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+div, form {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="text"], input[type="password"], select {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button, input[type="submit"], input[type="reset"] {
+    padding: 10px 20px;
+    margin: 6px 2px;
+    border: none;
+    border-radius: 4px;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    background: #2980b9;
+}
+
+p {
+    font-size: 1.1em;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* error page specific */
+h1 {
+    font-size: 70px;
+    color: #c0392b;
+}
+
+/* dynamic form row */
+.campoNuovo {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.campoNuovo button {
+    background: #e74c3c;
+}
+
+.campoNuovo button:hover {
+    background: #c0392b;
+}

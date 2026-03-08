@@ -42,8 +42,7 @@ if(
         $sql .= ")";
 
         $conn->exec($sql);
-
-        echo "Creata con successo";
+        $message = "Creata con successo";
     } catch(PDOException $e) {
         header("location: errorpage.html");
         exit();
@@ -54,3 +53,22 @@ if(
 }
 
 $conn=null;
+
+// display result page
+?>
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risultato</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <p><?php echo isset($message) ? $message : ''; ?></p>
+        <a href="gestione_db.php">&larr; Torna indietro</a>
+    </div>
+</body>
+</html>

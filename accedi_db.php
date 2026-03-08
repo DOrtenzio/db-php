@@ -11,28 +11,57 @@ if(isset($_POST["host"], $_POST["namedb"], $_POST["usr"], $_POST["psw"]) && !emp
     $_SESSION["dbname"] = $dbname;
     $_SESSION["usr"] = $username;
     $_SESSION["psw"] = $password;
-}elseif(isset($_SESSION["host"])){
+} elseif(isset($_SESSION["host"])){
     $servername = $_SESSION["host"];
     $dbname = $_SESSION["dbname"];
     $username = $_SESSION["usr"];
     $password = $_SESSION["psw"];
-}else{
-    echo "no1";
-    //header("Location: errorpage.html");
+} else {
+    // missing credentials; show simple styled message
+    ?>
+    <!DOCTYPE html>
+    <html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Errore accesso</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div>
+            <p>Dati di accesso mancanti</p>
+            <a href="index.html">&larr; Torna alla pagina iniziale</a>
+        </div>
+    </body>
+    </html>
+    <?php
     exit();
 }
 
 $conn = null;
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Errore: " . $e->getMessage();
-    //header("Location: errorpage.html");
-    exit();
-}
-
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch(PDOException $e) {
+        $errorText = $e->getMessage();
+        ?>
+        <!DOCTYPE html>
+        <html lang="it">
+        <head>
+            <meta charset="UTF-8">
+            <title>Errore connessione</title>
+            <link rel="stylesheet" href="style.css">
+        </head>
+        <body>
+            <div>
+                <p>Errore: <?php echo htmlspecialchars($errorText); ?></p>
+                <a href="index.html">&larr; Torna alla pagina iniziale</a>
+            </div>
+        </body>
+        </html>
+        <?php
+        exit();
+    }
 if($conn){
     $conn = null;
     header("location: gestione_db.php");
