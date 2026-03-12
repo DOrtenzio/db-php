@@ -1,6 +1,6 @@
 <?php
 if(session_status()===PHP_SESSION_NONE) session_start();
-require("connessione_db.php"); //controllo
+require("connessione_db.php"); 
 $conn=null;
 ?>
 
@@ -31,8 +31,10 @@ $conn=null;
                 <option value="VARCHAR">VARCHAR</option>
                 <option value="DATE">DATE</option>
             </select> 
-            <input class="isPK" type="checkbox" name="isPK[]" >E' PK?
-            <input class="isAI" type="checkbox" name="isAI[]" >E' Auto Incrementato?
+            <input class="isPK" type="checkbox" name="isPK[]" > PK
+            <input class="isAI" type="checkbox" name="isAI[]" > AI
+            <input class="isNull" type="checkbox" name="isNull[]" > NULL
+            <input class="defaultValue" type="text" name="defaultValue[]" > DEFAULT
             <button>X</button>
         </div>
     </template>
@@ -41,6 +43,19 @@ $conn=null;
         function aggiungiCampo(){
             const template = document.querySelector("template");
             const clone = template.content.cloneNode(true);
+            const btnPk = clone.querySelector(".isPK");
+            btnPk.addEventListener("change", function(){
+                const campo = btnPk.closest(".campoNuovo");
+                const btnAi = campo.querySelector(".isAI");
+                const btnNull = campo.querySelector(".isNull");
+
+                btnAi.disabled = btnPk.checked;
+                btnNull.disabled = btnPk.checked;
+                if(btnPk.checked){
+                    btnAi.checked=false;
+                    btnNull.checked=false;
+                }
+            });
             const btnRemove = clone.querySelector("button");
             btnRemove.onclick = function(){
                 this.parentElement.remove();

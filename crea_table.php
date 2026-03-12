@@ -12,37 +12,52 @@ if(
     !empty($_POST["tipoCampo"]) &&
     is_array($_POST["tipoCampo"]) &&
     isset($_POST["isPK"]) &&
-    !empty($_POST["isPK"]) &&
-    is_array($_POST["isPK"]) &&
-    isset($_POST["isAI"]) &&
-    !empty($_POST["isAI"]) &&
-    is_array($_POST["isAI"])){
+    !empty($_POST["isPK"])){
 
     try {
         $sql = "CREATE TABLE ".trim($_POST["nomeTabella"])." (";
 
-        for($i=0; $i < count($_POST["nomeCampo"]); $i++){
-            $nomeCampo = trim($_POST["nomeCampo"][$i]);
-            
-            $tipo = "";
-            if($_POST["tipoCampo"][$i] == "INT") $tipo = "INT";
-            elseif($_POST["tipoCampo"][$i] == "VARCHAR") $tipo = "VARCHAR(255)";
-            elseif($_POST["tipoCampo"][$i] == "DATE") $tipo = "DATE";
-            
-            $pk = "";
-            if(isset($_POST["isPK"][$i])) $pk = "PRIMARY KEY";
+        $numPk=0;
+        for($i=0; $i < count($_POST["nomeCampo"]); $i++) if(isset($_POST["isPK"][$i])) $numPk++;
 
-            $ai = "";
-            if(isset($_POST["isAI"][$i])) $ai = "AUTO_INCREMENT";
+        if($numPk==0){
+            header("location: errorpage.html");
+            exit();
+        }else{
+            for($i=0; $i < count($_POST["nomeCampo"]); $i++){
+                $nomeCampo = trim($_POST["nomeCampo"][$i]);
+                
+                $tipo = "";
+                if($_POST["tipoCampo"][$i] == "INT") $tipo = "INT";
+                elseif($_POST["tipoCampo"][$i] == "VARCHAR") $tipo = "VARCHAR(255)";
+                elseif($_POST["tipoCampo"][$i] == "DATE") $tipo = "DATE";
+                
+                $pk = "";
+                if(isset($_POST["isPK"][$i]) && $numPk==1) $pk = "PRIMARY KEY";
+    
+                $ai = "";
+                if($numPk > 1 && isset($_POST["isAI"][$i])){
+                    echo 1;
+                    header("location: errorpage.html");
+                    exit();
+                }
+    
+                $sql .= $nomeCampo." ".$tipo." ".$ai." ".$pk.",";
+            }
+    
+            if($numPk>1){
+                $sql .= "PRIMARY KEY(";
+                for($i=0; $i < count($_POST["nomeCampo"]); $i++) if(isset($_POST["isPK"][$i])) $sql .= $_POST["nomeCampo"][$i].",";
+                $sql = rtrim($sql,",");
+                $sql .= "),";
+            }
 
-            $sql .= $nomeCampo." ".$tipo." ".$ai." ".$pk.",";
+            $sql = rtrim($sql,","); 
+            $sql .= ")";
+    
+            $conn->exec($sql);
+            $message = "Creata con Successo \n".$sql;
         }
-
-        $sql = rtrim($sql,","); 
-        $sql .= ")";
-
-        $conn->exec($sql);
-        $message = "Creata con successo";
     } catch(PDOException $e) {
         header("location: errorpage.html");
         exit();
@@ -54,7 +69,6 @@ if(
 
 $conn=null;
 
-// display result page
 ?>
 
 <!DOCTYPE html>

@@ -17,7 +17,6 @@ if(isset($_POST["host"], $_POST["namedb"], $_POST["usr"], $_POST["psw"]) && !emp
     $username = $_SESSION["usr"];
     $password = $_SESSION["psw"];
 } else {
-    // missing credentials; show simple styled message
     ?>
     <!DOCTYPE html>
     <html lang="it">
