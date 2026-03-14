@@ -31,10 +31,12 @@ $conn=null;
                 <option value="VARCHAR">VARCHAR</option>
                 <option value="DATE">DATE</option>
             </select> 
-            <input class="isPK" type="checkbox" name="isPK[]" > PK
-            <input class="isAI" type="checkbox" name="isAI[]" > AI
-            <input class="isNull" type="checkbox" name="isNull[]" > NULL
-            <input class="defaultValue" type="text" name="defaultValue[]" > DEFAULT
+            PK: <input class="isPK" type="checkbox" name="isPK[]" > 
+            AI: <input class="isAI" type="checkbox" name="isAI[]" > 
+            NOT NULL: <input class="isNull" type="checkbox" name="isNull[]" > 
+            DEFAULT: <input type="hidden" name="thereIsDefault[]" value="0">
+                     <input type="checkbox" name="thereIsDefault[]" value="1">
+            <input class="defaultValue" type="text" name="defaultValue[]"  disabled>
             <button>X</button>
         </div>
     </template>
@@ -46,14 +48,20 @@ $conn=null;
             const btnPk = clone.querySelector(".isPK");
             btnPk.addEventListener("change", function(){
                 const campo = btnPk.closest(".campoNuovo");
-                const btnAi = campo.querySelector(".isAI");
                 const btnNull = campo.querySelector(".isNull");
 
-                btnAi.disabled = btnPk.checked;
                 btnNull.disabled = btnPk.checked;
                 if(btnPk.checked){
-                    btnAi.checked=false;
                     btnNull.checked=false;
+                }
+            });
+            const btnDef = clone.querySelector(".thereIsDefault");
+            btnDef.addEventListener("change", function() {
+                const campo = btnDef.closest(".campoNuovo");
+                const campoDef = campo.querySelector(".defaultValue");
+                campoDef.disabled = !btnDef.checked;
+                if (!btnDef.checked) {
+                    campoDef.value = "";
                 }
             });
             const btnRemove = clone.querySelector("button");

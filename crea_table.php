@@ -12,7 +12,9 @@ if(
     !empty($_POST["tipoCampo"]) &&
     is_array($_POST["tipoCampo"]) &&
     isset($_POST["isPK"]) &&
-    !empty($_POST["isPK"])){
+    !empty($_POST["isPK"]) &&
+    isset($_POST["thereIsDefault"]) &&
+    !empty($_POST["thereIsDefault"])){
 
     try {
         $sql = "CREATE TABLE ".trim($_POST["nomeTabella"])." (";
@@ -36,13 +38,26 @@ if(
                 if(isset($_POST["isPK"][$i]) && $numPk==1) $pk = "PRIMARY KEY";
     
                 $ai = "";
-                if($numPk > 1 && isset($_POST["isAI"][$i])){
-                    echo 1;
-                    header("location: errorpage.html");
-                    exit();
+                if(isset($_POST["isAI"][$i])) $ai = "AUTO_INCREMENT";
+
+                $null = "";
+                if (isset($_POST["isNull"][$i]) && $_POST["isNull"][$i]) $null = "NOT NULL";
+
+                $def = "";
+                $thereIsDefault = $_POST["thereIsDefault"][$i] ?? 0;
+                if ($thereIsDefault == 1) {
+                    $value = $_POST["defaultValue"][$i] ?? '';
+                    if ($value !== '') {
+                        if (strtoupper($tipoCampo) === "VARCHAR") $def = "DEFAULT '" . addslashes($value) . "'";
+                        else $def = "DEFAULT " . $value;
+                    } else {
+                        $def = (strtoupper($tipoCampo) === "VARCHAR") ? "DEFAULT ''" : "DEFAULT 0";
+                    }
+                } else {
+                    $def = ($null === "NOT NULL") ? ((strtoupper($tipoCampo) === "VARCHAR") ? "DEFAULT ''" : "DEFAULT 0") : "DEFAULT NULL";
                 }
     
-                $sql .= $nomeCampo." ".$tipo." ".$ai." ".$pk.",";
+                $sql .= $nomeCampo." ".$tipo." ".$ai." ".$null." ".$def." ".$pk.",";
             }
     
             if($numPk>1){
